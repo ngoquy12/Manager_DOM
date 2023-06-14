@@ -1,0 +1,33 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  height: 100vh;
+  width: 100%;
+  background-color: aliceblue;
+  display: flex;
+  align-items: center;
+  padding: 30px;
+  justify-content: space-around;
+}
+
+.form {
+  border: 1px solid black;
+  padding: 20px;
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+td,
+th {
+  padding: 10px 10px;
+}
