@@ -88,12 +88,9 @@ function validateData() {
  */
 function renderTable() {
   tableBody.innerHTML = "";
-
   for (let i = 0; i < data.length; i++) {
     let record = data[i];
-
     let row = document.createElement("tr");
-
     row.innerHTML = `
       <td>${i + 1}</td>
       <td>${record[0]}</td>
@@ -111,21 +108,19 @@ function renderTable() {
         <button onclick="deleteRecord(${i})">Xóa</button>
       </td>
     `;
-
     tableBody.appendChild(row);
   }
 }
 
+let typeValues = [];
 function addData() {
-  const typeValues = [];
-
   for (let i = 0; i < types.length; i++) {
     typeValues.push(types[i].value);
   }
 
   // Lấy giá trị từ các ô input checkbox cho trường "Size"
-  const sizeCheckboxes = document.querySelectorAll(".size");
-  const sizeValues = [];
+  let sizeCheckboxes = document.querySelectorAll(".size");
+  let sizeValues = [];
 
   for (let i = 0; i < sizeCheckboxes.length; i++) {
     if (sizeCheckboxes[i].checked) {
@@ -164,7 +159,7 @@ function resetData() {
   price.value = "";
   exportPrice.value = "";
   date.value = "";
-  const listSize = document.querySelectorAll(".size");
+  let listSize = document.querySelectorAll(".size");
   listSize[1].checked = false;
   listSize[2].checked = false;
   type.forEach((radio) => (radio.checked = true));
@@ -172,38 +167,37 @@ function resetData() {
 }
 
 // Thêm mới dữ liệu
-btnSubmit.addEventListener("click", function (e) {
+btnSubmit.addEventListener("click", handleSubmit);
+
+function handleSubmit(e) {
   e.preventDefault();
-  const valid = validateData();
+  let valid = validateData();
   if (valid) {
     addData();
     renderTable();
     resetData();
   }
-});
+}
 
 /**
  * Lấy thông tin bản ghi cần cập nhật lên form
  * @param {*} index
  * Author: NVQUY(13/04/2023)
  */
+let sizeValues = [];
 function editRecord(index) {
-  const typeValues = [];
-
+  let typeValues = [];
   for (let i = 0; i < types.length; i++) {
     typeValues.push(types[i].value);
   }
-
   // Lấy giá trị từ các ô input checkbox cho trường "Size"
-  const sizeCheckboxes = document.querySelectorAll(".size");
-  const sizeValues = [];
-
+  let sizeCheckboxes = document.querySelectorAll(".size");
+  let sizeValues = [];
   for (let i = 0; i < sizeCheckboxes.length; i++) {
     if (sizeCheckboxes[i].checked) {
       sizeValues.push(sizeCheckboxes[i].value);
     }
   }
-
   let record = data[index];
   productId.value = record[0];
   productName.value = record[1];
@@ -211,9 +205,13 @@ function editRecord(index) {
   exportPrice.value = record[3];
   date.value = record[4];
   sizeValues = record[5].split(", ");
-  typeValues = record[6].split(", ");
+  // typeValues = record[6].split(", "); ????????????
   description.value = record[7];
-
+  console.log("123");
+  // Đổi nút Submit thành Update
+  btnSubmit.textContent = "Update";
+  btnSubmit.removeEventListener("click", handleSubmit);
+  btnSubmit.addEventListener("click", updateRecord);
   editingIndex = index;
 }
 
@@ -221,7 +219,9 @@ function editRecord(index) {
  * Gán lại giá trị nhập vào từ form để cập nhật lại dữ liệu
  * Author: NVQUY(13/06/2023)
  */
-function updateRecord() {
+function updateRecord(e) {
+  e.preventDefault();
+  console.log("1234");
   let productIdValue = productId.value;
   let productNameValue = productName.value;
   let priceValue = price.value;
@@ -238,7 +238,7 @@ function updateRecord() {
   record[5] = sizeValues.join(", ");
   record[6] = typeValues.join(", ");
   record[7] = descriptionValue;
-
+  console.log(editingIndex);
   renderTable();
   resetData();
 }
